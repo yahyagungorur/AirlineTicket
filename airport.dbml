@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Airports" Class="AirportDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=DESKTOP-GOCT41U;Initial Catalog=Airports;Integrated Security=True" SettingsObjectName="UcakBileti.Properties.Settings" SettingsPropertyName="AirportsContext" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.flightpricess" Member="flightpricesses">
+    <Type Name="flightpricess">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ucusid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="fiyat" Type="System.String" DbType="NVarChar(5) NOT NULL" CanBeNull="false" />
+      <Association Name="flying_flightpricess" Member="flying" ThisKey="ucusid" OtherKey="id" Type="flying" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.flying" Member="flyings">
+    <Type Name="flying">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="rotationid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ktarih" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="vtarih" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="planeid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="flying_flightpricess" Member="flightpricesses" ThisKey="id" OtherKey="ucusid" Type="flightpricess" />
+      <Association Name="flying_reservationflying" Member="reservationflyings" ThisKey="id" OtherKey="ucusid" Type="reservationflying" />
+      <Association Name="plane_flying" Member="plane" ThisKey="planeid" OtherKey="id" Type="plane" IsForeignKey="true" />
+      <Association Name="route_flying" Member="route" ThisKey="rotationid" OtherKey="id" Type="route" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.location" Member="locations">
+    <Type Name="location">
+      <Column Name="lid" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="lname" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="lcode" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="location_route" Member="routes" ThisKey="lid" OtherKey="kid" Type="route" />
+      <Association Name="location_route1" Member="routes1" ThisKey="lid" OtherKey="vid" Type="route" />
+    </Type>
+  </Table>
+  <Table Name="dbo.passenger" Member="passengers">
+    <Type Name="passenger">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="rezid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="pname" Type="System.String" DbType="NChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="plastname" Type="System.String" DbType="NChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="pdogumtarihi" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="ptcno" Type="System.String" DbType="NChar(11) NOT NULL" CanBeNull="false" />
+      <Association Name="rezervation_passenger" Member="rezervation" ThisKey="rezid" OtherKey="id" Type="rezervation" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.plane" Member="planes">
+    <Type Name="plane">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="no" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ad" Type="System.String" DbType="NChar(10) NOT NULL" CanBeNull="false" />
+      <Association Name="plane_flying" Member="flyings" ThisKey="id" OtherKey="planeid" Type="flying" />
+    </Type>
+  </Table>
+  <Table Name="dbo.reservationflying" Member="reservationflyings">
+    <Type Name="reservationflying">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="rezid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ucusid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="durum" Type="System.String" DbType="NChar(10) NOT NULL" CanBeNull="false" />
+      <Association Name="flying_reservationflying" Member="flying" ThisKey="ucusid" OtherKey="id" Type="flying" IsForeignKey="true" />
+      <Association Name="rezervation_reservationflying" Member="rezervation" ThisKey="rezid" OtherKey="id" Type="rezervation" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.rezervationprice" Member="rezervationprices">
+    <Type Name="rezervationprice">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="rezervationid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="fiyat" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="rezervation_rezervationprice" Member="rezervation" ThisKey="rezervationid" OtherKey="id" Type="rezervation" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.rezervations" Member="rezervations">
+    <Type Name="rezervation">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="rezno" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="reztarihi" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="rezdurumu" Type="System.String" DbType="NChar(10) NOT NULL" CanBeNull="false" />
+      <Association Name="rezervation_passenger" Member="passengers" ThisKey="id" OtherKey="rezid" Type="passenger" />
+      <Association Name="rezervation_reservationflying" Member="reservationflyings" ThisKey="id" OtherKey="rezid" Type="reservationflying" />
+      <Association Name="rezervation_rezervationprice" Member="rezervationprices" ThisKey="id" OtherKey="rezervationid" Type="rezervationprice" />
+    </Type>
+  </Table>
+  <Table Name="dbo.route" Member="routes">
+    <Type Name="route">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="kid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="vid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="route_flying" Member="flyings" ThisKey="id" OtherKey="rotationid" Type="flying" />
+      <Association Name="location_route" Member="location" ThisKey="kid" OtherKey="lid" Type="location" IsForeignKey="true" />
+      <Association Name="location_route1" Member="location1" ThisKey="vid" OtherKey="lid" Type="location" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>
